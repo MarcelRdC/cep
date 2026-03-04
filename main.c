@@ -17,6 +17,8 @@ typedef struct city_node{
     struct city_node *middle;
 } CITY_NODE;
 
+//Cria um novo nó (com alocação na memória) e retorna seu endereço.
+//
 CITY_NODE *create_node(CITY new_node_data, CITY_NODE *left, CITY_NODE *right, CITY_NODE *middle){
 
     CITY_NODE *new_node;
@@ -33,14 +35,41 @@ CITY_NODE *create_node(CITY new_node_data, CITY_NODE *left, CITY_NODE *right, CI
     return new_node;
 }
 
+//Cria e insere um novo no acima de outro, fazendo a transferencia de filhos caso necessaria.
+//Retorna o endereço para o nó criado.
+//
+// CITY_NODE *this_node: nó de referencia.
+// CITY    new_node_data: campo data a ser usado na criacao do novo nó.
+//
+CITY_NODE* insert_new_in_between(CITY_NODE *this_node, CITY new_node_data){
+    
+    CITY_NODE *new_node_left = NULL;
+    CITY_NODE *new_node_right = NULL;
+
+    if(this_node->left!=NULL && this_node->left->data.cep_max < new_node_data.cep_min){
+        new_node_left = this_node->left;
+        this_node->left = NULL;
+    };
+    if(this_node->right!=NULL && this_node->right->data.cep_min > new_node_data.cep_max){
+        new_node_right = this_node->right;
+        this_node->right = NULL;
+    };
+
+    return create_node(new_node_data, new_node_left, new_node_right, this_node);
+}
+
+//Dado o ponteiro para uma árvore e um campo data de um nó, insere o nó na árvore
+//na posição adequada.
+//
+// CITY_NODE *this_node = endereço do nó de referência (ou raíz da árvore).
+// CITY   new_node_data = campo data usado para criar o novo nó.
+//
 CITY_NODE* insert_node(CITY_NODE *this_node, CITY new_node_data){
     
     if(this_node==NULL){                                                                          // A faixa de CEP da nova cidade corresponde a esse no folha.
         this_node = create_node(new_node_data, NULL, NULL, NULL);
     }else if(this_node->data.cep_max <= new_node_data.cep_max && this_node->data.cep_min >= new_node_data.cep_min){  //Se o nó a ser inserido possui uma faixa mais abrangente que o nó atual, inverte a posição dos nós.
-            this_node = create_node(new_node_data, this_node->left, this_node->right, this_node);
-            this_node->middle->left=NULL;
-            this_node->middle->right=NULL;
+            this_node = insert_new_in_between(this_node, new_node_data); //create_node(new_node_data, this_node->left, this_node->right, this_node);
     }else if(this_node->data.cep_max > new_node_data.cep_max && this_node->data.cep_min < new_node_data.cep_min){
             this_node->middle = insert_node(this_node->middle, new_node_data);  
     }else if(this_node->data.cep_min > new_node_data.cep_max){                                    // A faixa de CEP da nova cidade é menor que a deste no.
@@ -53,6 +82,13 @@ CITY_NODE* insert_node(CITY_NODE *this_node, CITY new_node_data){
     return this_node;
 }
 
+//Dado o ponteiro para uma árvore e um int referente a um CEP, retorna o campo data
+// de um nó contendo o nome do nó da árvore com o intervalo de CEP mais restrito ao
+// qual o CEP da entrada pertence, com todos os outros campos valendo NULL.
+//
+// CITY_NODE *this_node: endereço do nó de referência (ou raíz da árvore).
+// int       target_cep: CEP usado na busca.
+//
 CITY get_city_from_cep(CITY_NODE* this_node, int target_cep){
     
     CITY output;
@@ -79,6 +115,11 @@ CITY get_city_from_cep(CITY_NODE* this_node, int target_cep){
     return output;
 } 
 
+
+//Dado o ponteiro para uma árvore, desaloca da memória todos os nós da árvore.
+//
+// CITY_NODE *this_node: nó de referência (ou raíz da árvore).
+//
 void burn_tree(CITY_NODE *this_node){
 
     if(this_node->left!=NULL)
