@@ -1,9 +1,11 @@
+// Armazena uma instância da entrada.
 typedef struct city{
     char nome[35];
     int cep_min;
     int cep_max;
 } CITY;
 
+//Cria um nó para a árvore.
 typedef struct city_node{
     CITY data;
     struct city_node *left;

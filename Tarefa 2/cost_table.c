@@ -10,7 +10,7 @@ COST_NODE* create_neighbor_node(COST_DATA new_neighbor_data){
     new_node->data = new_neighbor_data;
     new_node->next = NULL;
 
-    printf("\nInserindo o vizinho %s de %s de custo %.2f.", new_neighbor_data.neighbor_name, new_neighbor_data.self_name, new_neighbor_data.cost);
+    //printf("\nInserindo o vizinho %s de %s de custo %.2f.", new_neighbor_data.neighbor_name, new_neighbor_data.self_name, new_neighbor_data.cost);
 
     return new_node;
 }
@@ -20,14 +20,14 @@ COST_NODE_LIST* create_cost_list_node(COST_DATA new_neighbor_data){
     COST_NODE_LIST *new_node;
     new_node = malloc(sizeof(COST_NODE_LIST));
 
-    COST_NODE* first_neighbor = create_neighbor_node(new_neighbor_data);
+    COST_NODE* first_neighbor = create_neighbor_node(new_neighbor_data);  //O primeiro e o último nó dessa lista são iguais por existir somente 1 nó após a criação.
 
     strcpy(new_node->name, first_neighbor->data.self_name);
     new_node->first_neighbor = first_neighbor;
     new_node->last_neighbor = first_neighbor;
     new_node->next = NULL;
 
-    printf("\nInserindo a lista de vizinhos de %s.\n", new_node->name);
+    //printf("\nInserindo a lista de vizinhos de %s.\n", new_node->name);
 
     return new_node;
 }

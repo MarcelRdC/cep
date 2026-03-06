@@ -1,14 +1,17 @@
+//Estrutura para cada linha da entrada.
 typedef struct cost_data{
     char self_name[35];
     char neighbor_name[35];
     double cost;
 } COST_DATA;
 
+//Estrutura para a lista de elementos da entrada.
 typedef struct cost_node{
     COST_DATA data;
     struct cost_node *next;
 } COST_NODE;
 
+//Estrutura para a lista das listas de elementos da entrada.
 typedef struct cost_node_list{
     char name[35];
     struct cost_node *first_neighbor;
@@ -21,7 +24,7 @@ typedef struct cost_node_list{
 //
 COST_NODE* create_neighbor_node(COST_DATA new_neighbor_data);
 
-// Cria um novo nó que aponta para uma nova lista de custos. O primeiro e o último nó dessa lista são iguais por existir somente 1 nó após a criação.
+// Cria um novo nó que aponta para uma nova lista de custos.
 //
 COST_NODE_LIST* create_cost_list_node(COST_DATA new_neighbor_data);
 
@@ -30,8 +33,11 @@ COST_NODE_LIST* create_cost_list_node(COST_DATA new_neighbor_data);
 //
 COST_NODE_LIST* insert_neighbor_of(COST_NODE_LIST *this_node, COST_DATA new_node);
 
+//Libera os endereços da lista na memória.
 void free_list(COST_NODE *this_node);
 
+//Libera os endereços da lista de lista na memória.
 void free_table(COST_NODE_LIST *this_node);
 
+//Cria a lista de listas de custos entre cidades.
 COST_NODE_LIST* make_cost_table(FILE *file);
