@@ -43,7 +43,7 @@ CITY_NODE* insert_node(CITY_NODE *this_node, CITY new_node_data){
             this_node->middle = insert_node(this_node->middle, new_node_data);  
     }else if(this_node->data.cep_min > new_node_data.cep_max){                                    // A faixa de CEP da nova cidade é menor que a deste no.
             this_node->left = insert_node(this_node->left, new_node_data);
-    }else if(this_node->data.cep_max < new_node_data.cep_min){                                          // A faixa de CEP da nova cidade é maior que a deste no.
+    }else if(this_node->data.cep_max < new_node_data.cep_min){                                    // A faixa de CEP da nova cidade é maior que a deste no.
             this_node->right = insert_node(this_node->right, new_node_data);
     }else printf("Internal Error.");
     

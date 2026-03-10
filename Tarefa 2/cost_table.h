@@ -1,7 +1,7 @@
 //Estrutura para cada linha da entrada.
 typedef struct cost_data{
-    char self_name[35];
-    char neighbor_name[35];
+    char vertex_a[35];
+    char vertex_b[35];
     double cost;
 } COST_DATA;
 

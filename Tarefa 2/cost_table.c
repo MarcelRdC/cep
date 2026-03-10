@@ -10,8 +10,6 @@ COST_NODE* create_neighbor_node(COST_DATA new_neighbor_data){
     new_node->data = new_neighbor_data;
     new_node->next = NULL;
 
-    //printf("\nInserindo o vizinho %s de %s de custo %.2f.", new_neighbor_data.neighbor_name, new_neighbor_data.self_name, new_neighbor_data.cost);
-
     return new_node;
 }
 
@@ -22,12 +20,10 @@ COST_NODE_LIST* create_cost_list_node(COST_DATA new_neighbor_data){
 
     COST_NODE* first_neighbor = create_neighbor_node(new_neighbor_data);  //O primeiro e o último nó dessa lista são iguais por existir somente 1 nó após a criação.
 
-    strcpy(new_node->name, first_neighbor->data.self_name);
+    strcpy(new_node->name, first_neighbor->data.vertex_a);
     new_node->first_neighbor = first_neighbor;
     new_node->last_neighbor = first_neighbor;
     new_node->next = NULL;
-
-    //printf("\nInserindo a lista de vizinhos de %s.\n", new_node->name);
 
     return new_node;
 }
@@ -37,7 +33,7 @@ COST_NODE_LIST* insert_neighbor_of(COST_NODE_LIST *this_node, COST_DATA new_node
     if(this_node==NULL)
         return create_cost_list_node(new_node);
 
-    if(strcmp(this_node->name, new_node.self_name))                              //strcmp() retorna 0 se as strings forem iguais.
+    if(strcmp(this_node->name, new_node.vertex_a))                              //strcmp() retorna 0 se as strings forem iguais.
         this_node->next = insert_neighbor_of(this_node->next, new_node);
     else{
         COST_NODE *new_last_neighbor = create_neighbor_node(new_node);
@@ -94,12 +90,12 @@ COST_NODE_LIST* make_cost_table(FILE *file){
         if(strcmp(buffer_line, end_of_input)){
 
             token = strtok(buffer_line, ",");
-            strcpy(new.self_name, token);
-            strcpy(new_neighbor.neighbor_name, token);
+            strcpy(new.vertex_a, token);
+            strcpy(new_neighbor.vertex_b, token);
 
             token = strtok(NULL, ",");
-            strcpy(new.neighbor_name, token);
-            strcpy(new_neighbor.self_name, token);
+            strcpy(new.vertex_b, token);
+            strcpy(new_neighbor.vertex_a, token);
 
             token = strtok(NULL, "\n");
             new.cost = atof(token);

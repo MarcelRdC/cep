@@ -3,6 +3,7 @@
 #include <string.h>
 #include "city_tree.h"
 #include "cost_table.h"
+#include "dijkstra.h"
 
 int main(int argc, char *argv[]){
 
@@ -31,11 +32,17 @@ int main(int argc, char *argv[]){
     int target_cep2 = atoi(token);
 
     //Busca pelas cidades alvo na árvore.
-    CITY city_1 = get_city_from_cep(tree, target_cep1);
-    CITY city_2 = get_city_from_cep(tree, target_cep2);
-    printf("\nO CEP (%d) pertence a cidade %s.\n", target_cep1, city_1.nome);
-    printf("\nO CEP (%d) pertence a cidade %s.\n\n", target_cep2, city_2.nome);
-    //get_cost_from_table(table, city_1, city_2);
+    COST_DATA city_1 = {0};
+    strcpy(city_1.vertex_a, get_city_from_cep(tree, target_cep1).nome);
+    strcpy(city_1.vertex_b, city_1.vertex_a);
+
+    COST_DATA city_2 = {0};
+    strcpy(city_2.vertex_a, get_city_from_cep(tree, target_cep2).nome);
+
+    printf("\nO CEP (%d) pertence a cidade %s.\n", target_cep1, city_1.vertex_a);
+    printf("\nO CEP (%d) pertence a cidade %s.\n", target_cep2, city_2.vertex_a);
+
+    dijkstra(city_1, city_2, table);
 
     //Bloco de liberação de memória.
     fclose(file);
